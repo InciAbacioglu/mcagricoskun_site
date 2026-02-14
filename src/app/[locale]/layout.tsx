@@ -1,6 +1,39 @@
 import type { ReactNode } from "react";
+import type { Metadata } from "next";
 import Header from "@/components/layout/Header";
 import { isLocale, type Locale } from "@/lib/i18n/locales";
+import { t } from "@/lib/i18n/dictionary";
+
+/* =========================
+   SEO METADATA (TR / EN)
+========================= */
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+
+  const activeLocale = locale === "en" ? "en" : "tr";
+  const copy = t(activeLocale);
+
+  const title = `${copy.brand} | ${copy.specialty}`;
+
+  const description =
+    activeLocale === "en"
+      ? "General Surgery — patient-centered care, clear communication, modern clinical experience."
+      : "Genel Cerrahi — hasta odaklı yaklaşım, şeffaf bilgilendirme, modern klinik deneyimi.";
+
+  return {
+    title,
+    description,
+  };
+}
+
+/* =========================
+   LAYOUT
+========================= */
 
 export default async function LocaleLayout({
   children,
