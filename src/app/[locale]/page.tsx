@@ -1,7 +1,7 @@
-import Container from "@/components/ui/Container";
-import ButtonLink from "@/components/ui/ButtonLink";
-import { t } from "@/lib/i18n/dictionary";
+import Link from "next/link";
 import { isLocale, type Locale } from "@/lib/i18n/locales";
+import drLogo from "@/assets/drlogo.png";
+import Image from "next/image";
 
 export default async function HomePage({
   params,
@@ -11,69 +11,64 @@ export default async function HomePage({
   const { locale: raw } = await params;
   const locale = (isLocale(raw) ? raw : "tr") as Locale;
 
-  const copy = t(locale);
+  const content =
+    locale === "tr"
+      ? {
+          title: "Op. Dr. Muhammed Çağrı Coşkun",
+          subtitle: "Genel Cerrahi",
+          message: "Sitemiz şu anda yapım aşamasındadır.",
+          description:
+            "Çok yakında daha kapsamlı içeriklerle yayında olacağız.",
+          instagram: "Instagram",
+        }
+      : {
+          title: "M.D. Muhammed Çağrı Coşkun",
+          subtitle: "General Surgery",
+          message: "Our website is currently under construction.",
+          description: "We will be live soon with more comprehensive content.",
+          instagram: "Instagram",
+        };
 
   return (
-    <div className="space-y-16">
-      {/* HERO */}
-      <section className="pt-6">
-        <Container>
-          <div className="rounded-3xl border border-black/5 bg-linear-to-b from-black/3 to-transparent p-10 md:p-14">
-            <p className="text-xs font-medium tracking-wide text-black/60">
-              {copy.specialty}
-            </p>
-
-            <h1 className="mt-4 text-4xl font-semibold tracking-tight md:text-6xl">
-              {copy.home.headline}
-            </h1>
-
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-black/60 md:text-lg">
-              {copy.home.subheadline}
-            </p>
-
-            <div className="mt-8 flex flex-wrap gap-3">
-              <ButtonLink href={`/${locale}/contact`} variant="primary">
-                {copy.home.ctaPrimary}
-              </ButtonLink>
-              <ButtonLink href={`/${locale}/services`} variant="secondary">
-                {copy.home.ctaSecondary}
-              </ButtonLink>
-            </div>
+    <main className="flex min-h-[80vh] items-center justify-center">
+      <section className="w-full max-w-3xl rounded-[32px] border border-black/5 bg-white px-8 py-14 text-center shadow-sm md:px-14">
+        <div className="flex justify-center">
+          <div className="relative h-24 w-24 overflow-hidden rounded-full border border-black/10 bg-black/[0.03] md:h-28 md:w-28">
+            <Image
+              src={drLogo}
+              alt="Doctor logo"
+              fill
+              className="object-contain p-3"
+              priority
+            />
           </div>
-        </Container>
-      </section>
+        </div>
 
-      {/* HIGHLIGHTS */}
-      <section>
-        <Container>
-          <div className="grid gap-4 md:grid-cols-3">
-            {copy.home.highlights.map((h: any) => (
-              <div
-                key={h.title}
-                className="rounded-3xl border border-black/5 bg-white p-6 shadow-sm"
-              >
-                <h3 className="text-lg font-semibold tracking-tight">
-                  {h.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-black/60">
-                  {h.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </section>
+        <p className="mt-6 text-sm font-medium tracking-[0.2em] text-black/45 uppercase">
+          {content.subtitle}
+        </p>
 
-      {/* NEXT SECTION PLACEHOLDER */}
-      <section className="pb-10">
-        <Container>
-          <div className="rounded-3xl border border-black/5 p-8 text-black/60">
-            {locale === "tr"
-              ? "Sonraki adım: Hizmet alanları grid + WhatsApp hızlı iletişim kartı."
-              : "Next: Services grid + quick WhatsApp contact card."}
-          </div>
-        </Container>
+        <h1 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">
+          {content.title}
+        </h1>
+
+        <p className="mt-6 text-lg text-black/75">{content.message}</p>
+
+        <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-black/55 md:text-base">
+          {content.description}
+        </p>
+
+        <div className="mt-8 flex items-center justify-center">
+          <Link
+            href="https://instagram.com/opdrmcagricoskun"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border border-black/10 px-5 py-3 text-sm font-medium text-black/75 transition hover:bg-black/5"
+          >
+            Instagram
+          </Link>
+        </div>
       </section>
-    </div>
+    </main>
   );
 }
